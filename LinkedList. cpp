@@ -1,0 +1,264 @@
+#include <iostream>
+using namespace std;
+class LL;
+class node
+{
+    int info;
+    node *nxt;
+
+  public:
+    node()
+    {
+        nxt = NULL;
+    }
+    friend class LL;
+};
+class LL
+{
+    node *start;
+    node *last;
+
+  public:
+    LL()
+    {
+        start = NULL;
+        last = NULL;
+    }
+    void InsertAtEnd()
+    {
+        int data;
+        node *new1 = new node;
+        cout << "Enter data to be Inserted at End : ";
+        cin >> data;
+
+        new1->info = data;
+        new1->nxt = NULL;
+
+        if (start == NULL)
+        {
+            start = new1;
+            last = new1;
+        }
+        else
+        {
+            last->nxt = new1;
+            last = new1;
+        }
+        last->nxt = NULL;
+    }
+    void InsertAtBeg()
+    {
+        int data;
+        node *new1 = new node;
+        cout << "Enter Data to be added at Beginning : ";
+        cin >> data;
+        new1->info = data;
+        if (start == NULL)
+        {
+            new1->nxt = NULL;
+            start = new1;
+            last = new1;
+        }
+        else
+        {
+            new1->nxt = start;
+            start = new1;
+        }
+    }
+    void InsertAtPos()
+    {
+        int pos, data;
+        node *new1 = new node;
+        cout << "Enter data : ";
+        cin >> data;
+        cout << "Enter Position for data : ";
+        cin >> pos;
+        new1->info = data;
+        if (pos == 1)
+        {
+            new1->nxt = start;
+            start = new1;
+        }
+        else
+        {
+            node *prev = start;
+            int count = 1;
+            while (count < (pos - 1) && prev != NULL)
+            {
+                prev = prev->nxt;
+                count++;
+            }
+            new1->nxt = prev->nxt;
+            prev->nxt = new1;
+            if(new1 -> nxt == NULL)
+            {
+                last = new1;
+            }
+        }
+    }
+    void InsertInSor()
+    {
+        int data;
+        node *new1 = new node;
+        cout << "Enter data : ";
+        cin >> data;
+        new1->info = data;
+        if (data <= start->info)
+        {
+            new1->nxt = start;
+            start = new1;
+        }
+        else
+        {
+            node *cur = start;
+            node *prev = NULL;
+            while (cur != NULL && data >= cur->info)
+            {
+                prev = cur;
+                cur = cur->nxt;
+            }
+
+            new1->nxt = cur;
+            prev->nxt = new1;
+            if (cur == NULL)
+            {
+                last = new1;
+            }
+        }
+    }
+    void DelAtBeg()
+    {
+        if (start == NULL)
+        {
+            cout << "List Underflow" << endl;
+        }
+        else
+        {
+            node *temp = start;
+            start = start->nxt;
+            temp->nxt = NULL;
+            cout << "Deleted Element is : " << temp->info << endl;
+            delete temp;
+        }
+    }
+    void DelAtEnd()
+    {
+        if (start == NULL)
+        {
+            cout << "List Underflow." << endl;
+        }
+        else if (start->nxt == NULL)
+        {
+            delete start;
+            start = NULL;
+        }
+        else
+        {
+            node *cur = start;
+            while (cur->nxt != last)
+            {
+                cur = cur->nxt;
+            }
+            cur->nxt = NULL;
+            cout << "Deleted Element is : " << last->info << endl;
+            delete last;
+            last = cur;
+        }
+    }
+    void DelAtPos()
+    {
+        int pos;
+        cout << "Enter Position at which u want to Delete : ";
+        cin >> pos;
+        node *cur = start;
+        node *prev = NULL;
+        if (start == NULL)
+        {
+            cout << "List Underflow." << endl;
+        }
+        else if (pos == 1)
+        {
+            start = start->nxt;
+            cur->nxt = NULL;
+            cout << "Deleted Element is : " << cur->info << endl;
+            delete cur;
+        }
+        else
+        {
+            int count = 1;
+            while (count < pos && cur != NULL)
+            {
+                prev = cur;
+                cur = cur->nxt;
+                count++;
+            }
+            prev->nxt = cur->nxt;
+            cur->nxt = NULL;
+            cout << "Deleted Element is : " << cur->info << endl;
+            delete cur;
+        }
+    }
+
+    void Display()
+    {
+        node *temp = start;
+        if (start == NULL)
+        {
+            cout << "Link is Empty.";
+        }
+        else
+        {
+            cout << "LL is : ";
+            while (temp != NULL)
+            {
+                cout << temp->info << endl;
+                temp = temp->nxt;
+            }
+        }
+    }
+};
+int main()
+{
+    LL p;
+    int n;
+
+    while (true)
+    {
+        cout << "Press \n1.InsertNode At End \n2.InsertAtBeg\n3.Insrt at specific Position\n4.Insert in Sorted list\n5.Delete Element at Beginning\n6.Delete Element from End of list\n7.Delete at specific position\n8.Display\n0.Exit" << endl;
+        cout << "Enter Operation no. :- ";
+        cin >> n;
+        if (n == 0)
+        {
+            break;
+        }
+        switch (n)
+        {
+        case 1:
+            p.InsertAtEnd();
+            break;
+        case 2:
+            p.InsertAtBeg();
+            break;
+        case 3:
+            p.InsertAtPos();
+            break;
+        case 4:
+            p.InsertInSor();
+            break;
+        case 5:
+            p.DelAtBeg();
+            break;
+        case 6:
+            p.DelAtEnd();
+            break;
+        case 7:
+            p.DelAtPos();
+            break;
+        case 8:
+            p.Display();
+            break;
+        default:
+            cout << "Please Choose Right Option." << endl;
+        }
+    }
+}
